@@ -1,0 +1,7 @@
+# Local provider credentials and CLI state must never enter the public repository.
+.env
+.env.*
+!.env.example
+*service-account*.json
+supabase/.temp/
+supabase/.branches/

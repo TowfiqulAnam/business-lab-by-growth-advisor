@@ -1,0 +1,6 @@
+project_id = "business-lab-growth-advisor"
+
+[functions.submit-lead]
+# The handler verifies the bearer token with Supabase Auth on EVERY request.
+# This also supports projects using asymmetric JWT signing keys.
+verify_jwt = false

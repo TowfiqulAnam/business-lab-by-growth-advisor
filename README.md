@@ -1,7 +1,7 @@
 # Business Lab by Growth Advisor
 
 **Developer: Anam**  
-**Version: v3.0 — Enterprise MIS & Lead-Gen Edition**
+**Version: v3.1 — Founder Workspace & Private Account Preparation**
 
 A mobile-responsive, browser-based business simulation that helps founders practice daily decision-making, forecasting, financial analysis, and consistency. Run a simulated Bangladeshi business, balance growth with cash flow, and learn from the results.
 
@@ -12,20 +12,31 @@ A mobile-responsive, browser-based business simulation that helps founders pract
 3. Select **⚡ 1-Click Instant Demo Business (Try Now!)** for a ready-to-run e-commerce business, or enter your own business details.
 4. Select **🚀 Launch My Business & Start Making Money**, plan your decisions, and select **🔥 Run Today's Operations & See Live Sales!**. All money and sales in the game are virtual.
 
-No installation, build command, backend, or API key is required. An internet connection enables the Tailwind CSS and Font Awesome CDN assets; embedded styling and icon fallbacks support the interface when those assets are unavailable.
+The local app needs no installation or build command. Optional online accounts and private Sheet delivery need the backend configuration described below. An internet connection enables the Tailwind CSS and Font Awesome CDN assets; embedded styling and icon fallbacks support the interface when those assets are unavailable.
 
-## V3.0 enterprise modules
+## V3.1 changes and activation status
 
-### Consultation intake and local MIS CRM
+The simulation engine, accounting, COGS/cash separation, RTO formulas, live order feed and celebrations remain unchanged. All browser UI and logic stay inside `index.html`.
 
-Use **Pitch Your Idea / Consult Growth Advisor (Free Audit)** from the navigation or dashboard. The required intake fields capture contact details, business stage, an operational plan, available capital, and bottlenecks. After validation and consent, the app saves an executive brief in `growth_advisor_leads` and opens the selected WhatsApp or email draft.
+- **Dated daily planner:** edit/delete all five original habits, create blank or preset lists for any date, copy a list to an unused date, add tasks, check progress, delete a day's list, and export history CSV. Existing nightly habits migrate into the first dated list once. The notification badge always counts today's incomplete tasks in Asia/Dhaka. Completed history stays intact.
+- **Results → reasons → improvement plan:** daily and final reports now link to evidence-based explanations, specific corrective actions and measurable checks. Download a standalone HTML action plan, print/save it as PDF, or add its actions to today's list. Recommendations do not alter game results.
+- **Money due:** customer receivables and supplier bills with due dates, partial payments, overdue flags, edit/delete controls and CSV export. This is a real-business organizer separate from simulation cash/profit. The existing project board remains available.
+- **Private intake:** the visitor MIS vault and owner Sheet links are removed from the app experience. Visitors only see their consultation form. New submissions no longer create a device-local lead archive. The original V3.0 archive is retained untouched for owner migration.
+- **Accounts prepared:** verified email-code signup/sign-in, explicit cloud Save/Load, conflict detection and sign-out clearing are implemented against Supabase. A private lead endpoint validates users and saves submissions to an owner-only table, then writes to the Sheet. **These online features are not live until the owner configures and deploys the backend.** The UI clearly says when setup is pending.
 
-- WhatsApp destination: `8801856084266`.
-- Email destination: `towfiqul.anam@gmail.com`.
-- Both channels use the same brief, including current simulation metrics. Changing channels within the form updates the existing submission instead of creating a duplicate.
-- The user reviews and sends the draft; the application does not claim to confirm message delivery.
-- **MIS Lead Vault** displays device-local submissions and supports CSV export, JSON backup download, and individual deletion. CSV text is escaped against spreadsheet formula injection.
-- The vault is a local convenience tool, not an authenticated multi-user admin system.
+Follow [the backend setup guide](supabase/SETUP.md). The extra files in `supabase/` are server deployment support, not a split frontend. Never embed private keys in the HTML. No paid service has been activated.
+
+Cloud workspace saves include the simulation, dated planner, legacy habit list, project board, owner profile, money-due entries and language. Saves are explicit; local autosave continues to work. Download a JSON backup before replacing this device's workspace with a cloud copy. A stale device cannot silently overwrite a newer cloud revision. Sign out on shared devices.
+
+The private workbook now includes a blank **Consultations** ingestion tab alongside existing **Leads** and **Usage**. Its 28 headers match the original export schema. Keep raw ingestion row positions intact; use a separate tab for sorting/analysis. Automated delivery awaits the owner-controlled Supabase project and Google service-account permission.
+
+Additional local keys: `business_lab_daily_plans_v1`, `business_lab_obligations_v1` and `business_lab_workspace_owner`. Reset Game preserves the business tools. This release was checked with isolated browser tests, including mobile layout, task history, report downloads, original cash/inventory reconciliation and mocked cloud-save conflicts. Live authentication, RLS and Google delivery still require the deployment acceptance checks in the guide.
+
+## Retained enterprise modules
+
+### Consultation intake
+
+The required form captures contact details, business stage, plan, budget and bottlenecks. With consent, signed-in users can submit to Growth Advisor through the private backend when configured. WhatsApp (`8801856084266`) and email (`towfiqul.anam@gmail.com`) drafts remain available; users review and send them themselves. Neither opening a draft nor a failed network call is reported as successful delivery. A confirmed private database save with pending Sheet delivery is shown distinctly.
 
 ### Smart report sharing
 
@@ -78,9 +89,9 @@ The connected account is `towfiqul.anam@gmail.com`.
 - [Enterprise MIS workspace](https://drive.google.com/drive/folders/1E_tLHQEOKu6KANQ5TAk8FXX7uLrSjTah)
 - [Native MIS lead-vault spreadsheet](https://docs.google.com/spreadsheets/d/1BCo31StL50LDK6YuNqPwXUcRIVIkACo3SgNS3LfQyoA/edit)
 
-Folders organize **Lead MIS**, **Forms and Application**, **Scorecards and Reports**, and **Proposal Decks**. The spreadsheet has matching CSV headers and import instructions. Demo exports contain simulated business data, not collected customer records.
+Folders organize **Lead MIS**, **Forms and Application**, **Scorecards and Reports**, and **Proposal Decks**. The spreadsheet has matching CSV headers and import instructions. The new Consultations tab is reserved for the private backend. Demo exports contain simulated business data, not collected customer records.
 
-The consultation form lives inside `index.html`; the Drive copy is an application/form archive, not a separately hosted Google Form. **Live visitor data is not automatically synchronized to Drive.** Export CSV/JSON from the vault and import/upload it in Drive. Upload scorecards and proposal files using the corresponding folders. The spreadsheet and folder links also appear in the app's vault. Their normal Google account permissions apply; no OAuth credentials or account secrets are embedded in the public application.
+The consultation form lives inside `index.html`. Direct Sheet delivery is implemented by the optional server function and requires deployment; it is not yet active. Manual exports remain available. Owner Sheet and Drive links are documented here but are not shown to app visitors. Google account permissions protect the workbook.
 
 ## Working prototype features
 
@@ -108,15 +119,15 @@ Pricing, marketing, reputation, stress, stock availability, cash constraints, an
 
 Progress is stored in `localStorage` in the current browser. Use the same browser and file location to continue a run; private browsing, clearing browser data, or browser restrictions can affect persistence. CSV export downloads completed daily records, not an importable game backup.
 
-The app has no account system, analytics, or backend lead transmission. V3.0 collects consultation details locally after consent and opens user-initiated WhatsApp/email drafts. CDN providers receive ordinary asset requests. **Reset Game** clears the current simulation after confirmation; it does not delete leads, the owner profile, language preference, projects, or nightly tasks. The vault and project board offer individual record deletion. Clearing browser site data removes all local records.
+The local app has no analytics. Optional online accounts and private consultation delivery require owner setup; see the activation guide. The public UI cannot list leads. Reset Game clears only the simulation. Sign-out clears the working business data on this device, while cloud data remains in the account.
 
-The nightly checklist uses a separate browser storage key. **Reset Checkboxes for a New Day** unchecks tasks while preserving the list, including custom tasks. **Reset Game** preserves the checklist. Custom tasks can be removed individually. Checklist days are reset manually, independently of simulation days.
+The dated planner saves independently from the simulation. Every date has its own editable list and completion history; all default and custom tasks can be edited or deleted. Copying to a new date resets completion only in the new copy.
 
 | Local storage key | Purpose |
 | --- | --- |
 | `business-lab-growth-advisor-v1` | Original simulation save, unchanged |
 | `business-lab-nightly-tasks-v1` | Nightly habits and custom tasks |
-| `growth_advisor_leads` | Consented local consultation submissions |
+| `growth_advisor_leads` | Legacy V3.0 archive only; no new submissions or public vault UI |
 | `business_lab_language` | English/Bangla preference |
 | `growth_advisor_business_profile` | Owner, target market, proposal assumptions |
 | `growth_advisor_projects_v1` | Project milestones and statuses |
@@ -131,7 +142,7 @@ The following remain planned features, not active capabilities in v3.0:
 | Multi-Product & SKU Inventory Matrix | Up to 50 products, dead-stock alerts, and supplier credit terms. |
 | B2B Loan, Investor Pitch & Cashflow Crisis Mode | SME loans, EMI management, investor pitches, and equity tradeoffs. |
 | Automated CRM & Retargeting Funnel | Follow-up and repeat-purchase campaigns through SMS or WhatsApp. |
-| Cloud CRM and opt-in recommendations | Authenticated multi-user lead management, automatic Drive/cloud synchronization, and separately consented service recommendations. V3.0 implements local intake and user-initiated sharing. |
+| Cloud CRM and opt-in recommendations | V3.1 prepares private accounts and Sheet delivery. Team roles, background retries and separately consented service recommendations remain future work. |
 | Future mobile release | Explore a mobile app and commercial release after further product development and validation. |
 
 ## Project structure
@@ -145,10 +156,11 @@ The application intentionally uses a single-file architecture, with Tailwind CSS
 
 ## Version history
 
+- **v3.1:** Editable dated daily plans, private account/backend preparation, visitor-safe consultation intake, downloadable improvement plans and customer/supplier dues.
 - **v3.0:** Consultation lead CRM, smart WhatsApp diagnostics, Bangla/English toggle, canvas PNG/A4 PDF scorecards, four industry presets, five-slide proposal exports, a local business project board, and a private Drive MIS workspace.
 - **v1.1:** Bolder action-driven copy, ownership footer, independently saved nightly tracker, live sales visuals, and profit/loss celebrations. The original simulation engine and application script are preserved unchanged.
 - **v1.0:** Working Prototype of Business Lab by Growth Advisor.
 
-Git tags `v1.0`, `v1.1`, and `v3.0` preserve the milestones. The previous experience upgrade was tagged `v1.1`; no historical V2.0 release is invented. Compare changes with `git diff v1.1 v3.0`, or inspect the original using `git show v1.0:index.html`. The `main` branch tracks the latest version.
+Git tags `v1.0`, `v1.1`, `v3.0`, and `v3.1` preserve the milestones. The previous experience upgrade was tagged `v1.1`; no historical V2.0 release is invented. Compare changes with `git diff v1.1 v3.0`, or inspect the original using `git show v1.0:index.html`. The `main` branch tracks the latest version.
 
 All application modules remain inside the single `index.html`. V3.0 adds an enterprise layer while retaining the original simulation, application, and V1.1 experience scripts unchanged. This preserves accounting, COGS/cash separation, live RTO math, game saving, order visuals, celebrations, and the nightly tracker.
